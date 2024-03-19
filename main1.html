@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Text Encryptor and Decryptor</title>
+    <!-- Import the CryptoJS library from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <!-- Add some CSS style to the web app -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        textarea, input {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 100px;
+            resize: none;
+        }
+
+        input[type="password"] {
+            height: 30px;
+        }
+
+        button {
+            height: 40px;
+            width: 120px;
+            margin: 10px 5px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+
+        button#encryptButton {
+            background-color: green;
+        }
+
+        button#decryptButton {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simple Text Encryptor and Decryptor</h1>
+    <form>
+        <p>Enter your text:</p>
+        <textarea id="inputText" rows="5" cols="50"></textarea>
+        <p>Enter your secret key:</p>
+        <input type="password" id="keyInput">
+        <p>Select your encryption or decryption method:</p>
+        <select id="methodSelect">
+            <option value="AES">AES</option>
+            <option value="DES">DES</option>
+            <option value="TripleDES">TripleDES</option>
+            <option value="Rabbit">Rabbit</option>
+            <option value="RC4">RC4</option>
+        </select>
+        <p>Click the button to encrypt or decrypt:</p>
+        <button type="button" id="encryptButton">Encrypt</button>
+        <button type="button" id="decryptButton">Decrypt</button>
+        <p>Your encrypted or decrypted text:</p>
+        <textarea id="outputText" rows="5" cols="50" readonly></textarea>
+    </form>
+    <script>
+        // Define a function to encrypt text with a secret key and a method
+        const encryptText = (text, key, method) => {
+            // Use the selected encryption algorithm
+            return CryptoJS[method].encrypt(text, key).toString();
+        };
+
+        // Define a function to decrypt text with a secret key and a method
+        const decryptText = (text, key, method) => {
+            // Use the selected decryption algorithm
+            const bytes = CryptoJS[method].decrypt(text, key);
+            // Convert bytes to UTF-8 string
+            return bytes.toString(CryptoJS.enc.Utf8);
+        };
+
+        // Define a function to handle the encryption button click
+        const handleEncrypt = () => {
+            // Get the input text value
+            const inputText = document.getElementById("inputText").value;
+            // Get the secret key value
+            const keyInput = document.getElementById("keyInput").value;
+            // Get the selected method value
+            const methodSelect = document.getElementById("methodSelect").value;
+            // Encrypt the input text with the secret key and the method
+            const encryptedText = encryptText(inputText, keyInput, methodSelect);
+            // Set the output text value
+            document.getElementById("outputText").value = encryptedText;
+        };
+
+        // Define a function to handle the decryption button click
+        const handleDecrypt = () => {
+            // Get the input text value
+            const inputText = document.getElementById("inputText").value;
+            // Get the secret key value
+            const keyInput = document.getElementById("keyInput").value;
+            // Get the selected method value
+            const methodSelect = document.getElementById("methodSelect").value;
+            // Decrypt the input text with the secret key and the method
+            const decryptedText = decryptText(inputText, keyInput, methodSelect);
+            // Set the output text value
+            document.getElementById("outputText").value = decryptedText;
+        };
+
+        // Add event listeners to the buttons
+        document.getElementById("encryptButton").addEventListener("click", handleEncrypt);
+        document.getElementById("decryptButton").addEventListener("click", handleDecrypt);
+    </script>
+</body>
+</html>
